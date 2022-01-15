@@ -1,3 +1,3 @@
-module github.com/kbeserra/tjson
+module tjson
 
 go 1.17
