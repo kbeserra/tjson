@@ -158,7 +158,7 @@ func unpackFunc(b []byte, v reflect.Value) error {
 	if err := json.Unmarshal(b, x); err != nil {
 		return err
 	}
-	v.Set(reflect.ValueOf(x).Convert(v.Type()))
+	v.Set(reflect.ValueOf(x).Convert(v.Type().Elem()))
 	return nil
 }
 
