@@ -87,7 +87,7 @@ func unpack(b []byte, v reflect.Value) error {
 
 	}
 
-	return fmt.Errorf("unsuported kind %v", v.Type().Kind())
+	return fmt.Errorf("unsupported kind %v", v.Type().Kind())
 }
 
 func unpackInterface(b []byte, v reflect.Value) error {
@@ -158,7 +158,7 @@ func unpackFunc(b []byte, v reflect.Value) error {
 	if err := json.Unmarshal(b, x); err != nil {
 		return err
 	}
-	v.Set(reflect.ValueOf(x).Convert(v.Type()))
+	v.Set(reflect.ValueOf(x).Elem().Convert(v.Type()))
 	return nil
 }
 
