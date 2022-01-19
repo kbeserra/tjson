@@ -124,33 +124,23 @@ func unpackSlice(b []byte, v reflect.Value) error {
 
 
 func unpackMap(b []byte, v reflect.Value) error {
-
-
-    c := reflect.New(reflect.MapOf(v.Type().Key(), reflect.TypeOf(json.RawMessage{})))
-
-
-    if err := json.Unmarshal(b, c.Interface()); err != nil {
-        return err
-    }
-
-
-    v.Set(reflect.MakeMapWithSize(v.Type(), 0))
-
-
-    iter := c.Elem().MapRange()
-    for iter.Next() {
-        k := iter.Key()
-        rawValue := iter.Value().Interface().(json.RawMessage)
-        u := reflect.New(v.Type().Elem()).Elem()
-        err := unpack(rawValue, u)
-        if err != nil {
-            return err
-        }
-        v.SetMapIndex(k, u)
-    }
-
-
-    return nil
+c := reflect.New(reflect.MapOf(v.Type().Key(), reflect.TypeOf(json.RawMessage{})))
+if err := json.Unmarshal(b, c.Interface()); err != nil {
+return err
+}
+v.Set(reflect.MakeMapWithSize(v.Type(), 0))
+iter := c.Elem().MapRange()
+for iter.Next() {
+k := iter.Key()
+rawValue := iter.Value().Interface().(json.RawMessage)
+u := reflect.New(v.Type().Elem()).Elem()
+err := unpack(rawValue, u)
+if err != nil {
+return err
+}
+v.SetMapIndex(k, u)
+}
+return nil
 }
 
 func unpackFunc(b []byte, v reflect.Value) error {
