@@ -82,6 +82,9 @@ func unpack(b []byte, v reflect.Value) error {
 		return unpackSlice(b, v)
 	case reflect.Map:
 		return unpackMap(b, v)
+	case reflect.Func:
+		return unpackFunc(b, v)
+
 	}
 
 	return nil
@@ -140,6 +143,20 @@ func unpackMap(b []byte, v reflect.Value) error {
 		v.SetMapIndex(reflect.ValueOf(key).Elem(), u)
 	}
 
+	return nil
+}
+
+func unpackFunc(b []byte, v reflect.Value) error {
+	x, err := NewFromTypedObject(b)
+
+	if err != nil {
+		return err
+	}
+
+	if err := json.Unmarshal(b, x); err != nil {
+		return err
+	}
+	v.Set(reflect.ValueOf(x).Convert(v.Type()))
 	return nil
 }
 
