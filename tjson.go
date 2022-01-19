@@ -87,7 +87,7 @@ func unpack(b []byte, v reflect.Value) error {
 
 	}
 
-	return nil
+	return fmt.Errorf("unsuported kind %v", v.Type().Kind())
 }
 
 func unpackInterface(b []byte, v reflect.Value) error {
