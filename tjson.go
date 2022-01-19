@@ -138,8 +138,10 @@ func unpackMap(b []byte, v reflect.Value) error {
 		}
 
 		u := reflect.New(v.Type().Elem()).Elem()
-		unpack(rawValue, u)
-
+		err := unpack(rawValue, u)
+		if err != nil {
+			return err
+		}
 		v.SetMapIndex(reflect.ValueOf(key).Elem(), u)
 	}
 
